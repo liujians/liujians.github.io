@@ -11,18 +11,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="static/dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect.
   -->
-  <link rel="stylesheet" href="static/dist/css/skins/skin-black.min.css">
+  <link rel="stylesheet" href="../dist/css/skins/skin-black.min.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -79,14 +79,14 @@ desired effect
             <!-- Menu Toggle Button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
-              <img src="static/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <img src="../dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
               <span class="hidden-xs">liujians</span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="static/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
                   liujians - Web Developer
@@ -123,7 +123,7 @@ desired effect
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="static/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img src="../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
           <p>liujians</p>
@@ -148,9 +148,9 @@ desired effect
       <ul class="sidebar-menu">
         <li class="header">MENU</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="#"><i class="fa fa-home"></i> <span>home</span></a></li>
-        <li><a href="static/pages/WeApp.html"><i class="fa fa-wechat"></i> <span>WeApp</span></a></li>
-        <li><a href="static/pages/WeApp-server.html"><i class="fa fa-wechat"></i> <span>WeApp-server</span></a></li>
+        <li><a href="../../index.html"><i class="fa fa-home"></i> <span>home</span></a></li>
+        <li><a href="WeApp.html"><i class="fa fa-wechat"></i> <span>WeApp-server</span></a></li>
+        <li class="active"><a href="static/pages/WeApp-server.html"><i class="fa fa-wechat"></i> <span>WeApp-server</span></a></li>
         <!-- <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
             <span class="pull-right-container">
@@ -177,7 +177,7 @@ desired effect
         <small>liujians.github.io</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-home active"></i> home</a></li>
+        <li><a href="#"><i class="fa fa-wechat active"></i>WeApp</a></li>
         <!-- <li class="active">Here</li> -->
       </ol>
     </section>
@@ -186,12 +186,24 @@ desired effect
     <section class="content">
 
       <!-- Your Page Content Here -->
-      <img class="img-responsive" src="http://www.dabaoku.com/gif/biaoshi/051/134fd.gif" alt="">
-      <ul>
-        <h4>记录里程碑</h4>
-        <li><a href="static/pages/WeApp.html">2016-09-29-WeApp</a></li>
-        <li><a href="static/pages/WeApp-server.html">2016-10-09-WeApp-server</a></li>
-      </ul>
+      <h3>这里是liujians\weApp的依赖server</h3>
+      <p>由于weApp的项目不能与server的代码混杂,所以server开在这里
+        <br/>
+        关于weApp的内容请访问这里:
+        <br/></p>
+        <blockquote>
+          <p><a href="https://github.com/liujians/WeApp" title="https://github.com/liujians/WeApp">https://github.com/liujians/WeApp</a></p>
+        </blockquote>
+        <h3>项目历程：</h3>
+        <ul>
+          <li>10月08日——将好友列表，消息记录数据存入server中，从server请求数据，为了方便没有用数据库，只是临时写了JSON，用作示例wx.request请求数据(分为一个get请求,一个post请求)。server 部分为单独一个项目，需要下载跑起来才能运行此项目</li>
+        </ul>
+        <h3>关于使用：</h3>
+        <blockquote>
+          <p>用命令行进入项目根目录下，输入npm install
+            安装依赖成功后，输入npm run dev运行</p>
+          </blockquote>
+
     </section>
     <!-- /.content -->
   </div>
@@ -289,11 +301,11 @@ desired effect
 <!-- REQUIRED JS SCRIPTS -->
 
 <!-- jQuery 2.2.3 -->
-<script src="static/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
-<script src="static/bootstrap/js/bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
-<script src="static/dist/js/app.min.js"></script>
+<script src="../dist/js/app.min.js"></script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
