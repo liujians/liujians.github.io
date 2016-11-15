@@ -58,11 +58,7 @@ webpack配置
     		$(".content").html(md.render(text).replace(/^img_01^/,"<img src='/static/img/get_file_1.png' class='img-responsive' />"))
     	})
 
-如何嵌入图片
 
-		//这里我在markdown内做了一个^img_01^标记、
-		//当插件render之后的字符串先使用replace替换了其中的^img_01^成img标签、
-		//因为图片不会很多、所以这样做起来也不会麻烦、（大不了用数组键值对嘛）
 
 大功告成、现在每次添加文章只需要三步
 
@@ -70,7 +66,7 @@ webpack配置
 2. 在文章列表页加一个链接
 3. 传入文件名给文章页
 
-![](/static/img/get_file_1.png)
+![](http://ogo5zlrgk.bkt.clouddn.com/get_file_1.png)
 
 ___
 本文出自————[http://liujians.me](http://liujians.me)
