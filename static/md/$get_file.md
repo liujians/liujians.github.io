@@ -70,7 +70,7 @@ webpack配置
 2. 在文章列表页加一个链接
 3. 传入文件名给文章页
 
-%img_01%
+![](/static/img/get_file_1.png)
 
 ___
 本文出自————[http://liujians.me](http://liujians.me)
