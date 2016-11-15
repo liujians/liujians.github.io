@@ -1,4 +1,4 @@
-### 使用formidable做node的文件上传
+### 使用formidable做node的文件上传，并利用iframe让表单提交不跳转
 
 2016-11-14 liujians
 
