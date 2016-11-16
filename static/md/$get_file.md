@@ -1,4 +1,4 @@
-## 前端巧用$.get()将markdown文件内容读取，并直接显示再页面上
+### 前端巧用$.get()将markdown文件内容读取，并直接显示再页面上
 
 2016-11-14 liujians
 
@@ -12,7 +12,7 @@
 
 今天这里主要说的是：markdown文件内容读取到本地，并直接显示再页面上
 
-> 首先不知道markdown的猿们可要抓紧普及一下再回来[Markdown-入门指南](http://www.jianshu.com/p/1e402922ee32/?_blank)
+> 首先不知道markdown的coder们可要抓紧普及一下再回来[Markdown-入门指南](http://www.jianshu.com/p/1e402922ee32/?_blank)
 
 对于vue+adminlte项目的整合可以参考我的开源demo——[SPA about vue-cli+adminLte+vue-router](https://github.com/liujians/vue-adminLte-vue-router)
 
