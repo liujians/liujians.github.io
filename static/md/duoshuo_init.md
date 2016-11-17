@@ -60,8 +60,11 @@ js
         window._bd_share_main.init();
     }
 
-那我们调用多说的初始化代码
+我们调用多说的初始化代码就可以了
 
 	if(window.DUOSHUO){
         DUOSHUO.init()
     }
+
+___
+本文出自————[http://liujians.me](http://liujians.me)
