@@ -1,4 +1,4 @@
-### 使用Vue的props做父子组件的通信
+### 使用Vue的props做组件的通信
 
 2016-11-18 liujians
 
