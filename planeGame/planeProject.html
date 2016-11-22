@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/plane.css"/>
+</head>
+<body>
+<div id="start" style="display: block;">
+    <div class="about">
+        <div class="player1"></div>
+        <div class="player1text">丹尼斯:本作主角,是吸血鬼与人类的“混血”,每次等级提升可以增加人物属性(射速、移速、弹夹数量),子弹分别在6级和12级会升级.</div>
+        <div class="ssplane"></div>
+        <!--<div class="ssplanetext">丹尼斯:本作主角,是吸血鬼与人类的“混血”,每次等级提升可以增加人物属性(射速、移速、弹夹数量),分别在6级和11级子弹会升级.</div>-->
+        <div class="yaoguai"></div>
+        <div class="guaiwutext1">普通怪物，血量低</div>
+        <div class="dargon"></div>
+        <div class="dargon2"></div>
+        <div class="guaiwutext2">危险怪物，血量高</div>
+        <div class="text3">✲必杀技只可以使用三次、对Boss无效、慎用</div>
+    </div>
+    <span id="ssyd" style="color: red">移动</span>
+    <span id="ssgj" style="color: green">攻击</span>
+    <span id="ssbs" style="color: blueviolet">必杀</span>
+    <div id="startBtn" onclick="startGame()">Start</div>
+    <div id="closeBtn" onclick="exitGame()">Exit</div>
+</div>
+<div id="over" style="display: none;">
+    <div class="overscore">Your Score:</div>
+    <div id="overscore"></div>
+    <div class="xixueguiover"></div>
+    <div class="xiaolongzuo"></div>
+    <div class="xiaolongyou"></div>
+    <div id="btnHome" onclick="location.reload();">返回主页</div>
+</div>
+<div id="game" style="display: none;height: 100%">
+    <div id="title">
+        <div id="text"><h1>Doomed</h1>
+        <div id="stopmusic" style="background-image: url('img/stopmusic.png');" onclick="stopMusic(this)"></div><div id="stopshotmusic" onclick="stopshotmusic(this)"></div>
+    </div>
+    <div id="grade">
+        <span id="lv" style="font-size: 26px;">1</span>
+        <span id="capacity" style="font-size: 26px;">5</span>
+        <span id="score" style="font-size: 26px;">0</span>
+        <div></div>
+        <div></div>
+        <div></div>
+        <img src="img/boom.png" alt=""/>
+        <img src="img/boom.png" alt=""/>
+        <img src="img/boom.png" alt=""/>
+    </div>
+    </div>
+    <div id="container" style="height: 90%;">
+        <div id="tishi" style="display: none">Mission1</div>
+        <div id="tanhao1" style="display: none"></div>
+        <div id="tanhao2" style="display: none"></div>
+        <div id="tanhao3" style="display: none"></div>
+    </div>
+    <audio src="audio/startBgm.mp3" id="startmusic" autoplay loop="loop"></audio>
+    <audio src="audio/bgmusic.mp3" id="bgmusic" loop="loop"></audio>
+    <audio src="audio/dazhao.wav" id="dazhao"></audio>
+    <audio src="audio/shengji.wav" id="shengJiMusic"></audio>
+    <audio src="audio/baoxiang.wav" id="baoxiangMusic"></audio>
+    <audio src="audio/paoxiao.wav" id="paoxiao"></audio>
+    <audio src="audio/shoushang.wav" id="shoushang"></audio>
+    <audio src="audio/jiguangmusic.wav" id="jiguangmusic"></audio>
+    <audio src="audio/shibai.wav" id="shibai"></audio>
+    <audio src="audio/shibaiBgm.mp3" id="shibaiBgm"></audio>
+    <audio src="audio/shengli.wav" id="shengli"></audio>
+    <audio src="audio/shenglibgm.mp3" id="shenglibgm"></audio>
+</div>
+
+</body>
+<script>
+    //全局
+    var container = document.getElementById("container");
+    var score = document.getElementById("score");
+    var Lvobj = document.getElementById("lv");
+    var grade = document.getElementById("grade");
+    var capacity = document.getElementById("capacity");
+    var game = document.getElementById("game");
+    var over = document.getElementById("over");
+    var tanhao1 = document.getElementById("tanhao1");
+    var tanhao2 = document.getElementById("tanhao2");
+    var tanhao3 = document.getElementById("tanhao3");
+    var bossArr=[],jiguangArr=[],planeArr=[],splaneArr=[],zidanArr=[],baziArr=[],yaoguaiArr=[],direnzidan=[],xiaolongArr=[];
+    var bgmusic=document.getElementById("bgmusic");
+    var dazhao=document.getElementById("dazhao");
+    var start=document.getElementById("start");
+    var tishi = document.getElementById("tishi");
+    var overscore = document.getElementById("overscore");
+    var startmusic = document.getElementById("startmusic");
+    var shengJiMusic = document.getElementById("shengJiMusic");
+    var baoxiangMusic = document.getElementById("baoxiangMusic");
+    var paoxiao = document.getElementById("paoxiao");
+    var shoushang = document.getElementById("shoushang");
+    var jiguangmusic = document.getElementById("jiguangmusic");
+    var shibai = document.getElementById("shibai");
+    var shibaiBgm = document.getElementById("shibaiBgm");
+    var shengli = document.getElementById("shengli");
+    var shenglibgm = document.getElementById("shenglibgm");
+    var scoreNUm2;
+    var bgm=true;
+    var hasboss=false;
+    bgmusic.volume=0.7;
+    var jg=false,jga,jgb,jgc;
+    //背景移动距离
+    var x=0;
+    //分数
+    var scoreNum=0;
+    //等级
+    var Lv=1;
+    //弹夹数量
+    var danjia;
+    var a = 5;
+    //玩家移动速度
+    var sd = 3;
+    //炸弹数量
+    var bomb=3;
+    //子弹速度
+    var zdsd = 10;
+    //audio
+    var count1 = 1,count2 = 1,count3 = 1,count4 = 1,count5 = 1,count6 = 3;
+    var music=new Audio(),music2=new Audio(),music3=new Audio(),music4=new Audio(),music5=new Audio(),music6=new Audio();
+    music.volume=0.4;
+    music2.volume=0.3;
+    music3.volume=0.4;
+    music4.volume=0.4;
+    music5.volume=0.4;
+    music6.volume=0.4;
+    musicon=true;
+    var tishitime=150;
+    var moveL=false,moveR=false,moveU=false,moveB=false,Fire=false;
+    var bombboom=true;
+    var changecolor = setInterval(colorChange,200);
+    function colorChange(){
+        if(start.style.display=="block"){
+            var ssyd = document.getElementById("ssyd");
+            var ssgj = document.getElementById("ssgj");
+            var ssbs = document.getElementById("ssbs");
+            switch (ssyd.style.color){
+                case "red":ssyd.style.color="black";break;
+                case "black":ssyd.style.color="green";break;
+                case "green":ssyd.style.color="blueviolet";break;
+                case "blueviolet":ssyd.style.color="red";break;
+            }
+            switch (ssgj.style.color){
+                case "red":ssgj.style.color="black";break;
+                case "black":ssgj.style.color="green";break;
+                case "green":ssgj.style.color="blueviolet";break;
+                case "blueviolet":ssgj.style.color="red";break;
+            }
+            switch (ssbs.style.color){
+                case "red":ssbs.style.color="black";break;
+                case "black":ssbs.style.color="green";break;
+                case "green":ssbs.style.color="blueviolet";break;
+                case "blueviolet":ssbs.style.color="red";break;
+            }
+        }
+    };
+    var spc1,spc2,cpc1,ssp1,bzc,ygc,dyc;
+    //循环调用
+    function startgame(){
+            clearInterval(changecolor);
+            setInterval(bg,40);
+            spc1 = setInterval(smallPlaneCreate,4000);
+            spc2 = setInterval(smallPlaneCreate2,4000);
+            cpc1 = setInterval(ccPlaneCreate,800);
+            ssp1 = setInterval(SsPlaneCreate,600);
+            bzc = setInterval(baZiCreate,20000);
+            ygc = setInterval(yaoguaiCreate,2500);
+            dyc = setInterval(dayanCreate,2000);
+            setInterval(SsPlaneMove,30);
+            setInterval(smallPlaneMove,30);
+            setInterval(baZiMove,30);
+            setInterval(yaoguaiMove,30);
+            setInterval(playerpengzhuang,10);
+            setInterval(bossMove,30);
+            setInterval(xiaolongMove,30);
+            setInterval(planeMove,30);
+            setInterval(shotMove,50);
+            setInterval(direnshot,50);
+            setInterval(pengzhuang,10);
+            setInterval(BossCreate,10);
+            setInterval(shijian,10);
+            tishi.style.display="block";
+//            setTimeout(function(){
+//                tishi.style.display="none";
+//            },2000);
+            //玩家飞机
+            player1 = new playerPlane("img/xixuegui.gif",0,270);
+            pb = player1.blood;
+            startmusic.pause();
+            bgmusic.play();
+            bgmusic.addEventListener("ended",function(){
+                bgmusic.play();
+            })
+    }
+    var player1;
+    var pb;
+    //开始游戏
+    function startGame(){
+        start.style.display="none";
+        game.style.display="block";
+        startgame();
+    }
+    //退出游戏
+    function exitGame(){
+        var a = window.confirm("确认要退出游戏吗？");
+        if(a){
+            window.close()
+        }
+    }
+    //背景移动函数
+    function bg(){
+        container.style.backgroundPositionX=x+"px";
+        x=x-6;
+    }
+    //音乐
+
+    function stopMusic(obj){
+        if(bgm==true){
+            obj.style.backgroundImage="url(img/stopmusic2.png)";
+            bgmusic.pause();
+            shibaiBgm.volume=0;
+            shenglibgm.volume=0;
+            bgm=false;
+        }else{
+            obj.style.backgroundImage="url(img/stopmusic.png)";
+            bgmusic.play();
+            shibaiBgm.volume=1;
+            shenglibgm.volume=1;
+            bgmusic.loop="-1";
+            bgm=true;
+        }
+
+    }
+    //敌对飞机模板{imgSrc,x,y,speed}
+    function smallPlaneModel(imgSrc,x,y,speed){
+        this.imgNode=document.createElement("img");
+        this.imgSrc=imgSrc;
+        this.x=x;
+        this.y=y;
+        this.speed=speed;
+        this.isDead=false;
+        this.time=40;
+        this.shottime=60;
+//        this.movetime=10;
+        this.shottime2=3;
+        this.shottime3=5;
+        this.blood=10;
+
+        this.Bossmove=function(){
+//            this.movetime--;
+            if(parseInt(this.imgNode.style.left)>900){
+                this.imgNode.style.left=parseInt(this.imgNode.style.left)-this.speed+"px";
+            }
+        };
+        this.move=function(){
+            this.imgNode.style.left=parseInt(this.imgNode.style.left)-this.speed+"px";
+        };
+        this.csh=function(){
+            this.imgNode.src=this.imgSrc;
+            this.imgNode.style.width="120px";
+            this.imgNode.style.position="absolute";
+            this.imgNode.style.left=this.x+"px";
+            this.imgNode.style.top=this.y+"px";
+            container.appendChild(this.imgNode);
+        };
+        this.csh();
+    }
+
+    //创建敌对飞机并放入数组
+    function smallPlaneCreate(){
+        if(Lv>=5){
+            var smallPlane = new smallPlaneModel("img/dargon.gif",1400,(Math.random()*483),(Math.random()*10+10));
+            if(Lv>=10){
+                smallPlane.blood=15;
+            }
+            planeArr.push(smallPlane);
+        }
+    }
+    function smallPlaneCreate2(){
+        if(Lv>=10){
+            var smallPlane = new smallPlaneModel("img/dargon2.gif",1400,(Math.random()*483),(Math.random()*10+15));
+            smallPlane.imgNode.style.width="160px";
+            smallPlane.blood=20;
+            planeArr.push(smallPlane);
+        }
+    }
+
+    function BossCreate(){
+        if(Lv>=15){
+            clearInterval(spc1);
+            clearInterval(spc2);
+            clearInterval(cpc1);
+            clearInterval(ssp1);
+            clearInterval(bzc);
+            clearInterval(ygc);
+            clearInterval(dyc);
+            if(hasboss==false){
+                var Boss = new smallPlaneModel("img/Boss.gif",1800,0,(Math.random()*5+5));
+                Boss.imgNode.style.width="500px";
+                Boss.blood=600;
+                bossArr.push(Boss);
+                hasboss=true;
+            }
+        }
+
+    }
+
+    //boss移动函数
+    function bossMove(){
+            if(hasboss==true){
+                bossArr[0].Bossmove();
+                bossArr[0].shottime--;
+                if(bossArr[0].shottime==0){
+                    bossArr[0].shottime=60;
+                    var Dshot = new planeShot("img/zidan.gif",parseInt(bossArr[0].imgNode.style.left)+20,parseInt(bossArr[0].imgNode.style.top)+70,20);
+                    var Dshot2 = new planeShot("img/zidan.gif",parseInt(bossArr[0].imgNode.style.left)+20,parseInt(bossArr[0].imgNode.style.top)+110,21);
+                    var Dshot3 = new planeShot("img/zidan.gif",parseInt(bossArr[0].imgNode.style.left)+20,parseInt(bossArr[0].imgNode.style.top)+150,22);
+                    var Dshot4 = new planeShot("img/zidan.gif",parseInt(bossArr[0].imgNode.style.left)+20,parseInt(bossArr[0].imgNode.style.top)+190,23);
+                    var Dshot5 = new planeShot("img/zidan.gif",parseInt(bossArr[0].imgNode.style.left)+20,parseInt(bossArr[0].imgNode.style.top)+230,24);
+                    var Dshot6 = new planeShot("img/zidan.gif",parseInt(bossArr[0].imgNode.style.left)+20,parseInt(bossArr[0].imgNode.style.top)+270,25);
+                    var Dshot7 = new planeShot("img/zidan.gif",parseInt(bossArr[0].imgNode.style.left)+20,parseInt(bossArr[0].imgNode.style.top)+310,25);
+                    var Dshot8 = new planeShot("img/zidan.gif",parseInt(bossArr[0].imgNode.style.left)+20,parseInt(bossArr[0].imgNode.style.top)+350,24);
+                    var Dshot9 = new planeShot("img/zidan.gif",parseInt(bossArr[0].imgNode.style.left)+20,parseInt(bossArr[0].imgNode.style.top)+390,23);
+                    var Dshot10 = new planeShot("img/zidan.gif",parseInt(bossArr[0].imgNode.style.left)+20,parseInt(bossArr[0].imgNode.style.top)+430,22);
+                    var Dshot11 = new planeShot("img/zidan.gif",parseInt(bossArr[0].imgNode.style.left)+20,parseInt(bossArr[0].imgNode.style.top)+470,21);
+                    var Dshot12 = new planeShot("img/zidan.gif",parseInt(bossArr[0].imgNode.style.left)+20,parseInt(bossArr[0].imgNode.style.top)+510,20);
+                    count3 = 1;
+                    shotaudio("audio/zidan.wav");
+                    direnzidan.push(Dshot);
+                    direnzidan.push(Dshot2);
+                    direnzidan.push(Dshot3);
+                    direnzidan.push(Dshot4);
+                    direnzidan.push(Dshot5);
+                    direnzidan.push(Dshot6);
+                    direnzidan.push(Dshot7);
+                    direnzidan.push(Dshot8);
+                    direnzidan.push(Dshot9);
+                    direnzidan.push(Dshot10);
+                    direnzidan.push(Dshot11);
+                    direnzidan.push(Dshot12);
+                    bossArr[0].shottime2--;
+                    bossArr[0].shottime3--;
+                }
+                if(bossArr[0].shottime2==0){
+                    var bl = bossArr[0].imgNode.style.left;
+                    bossArr[0].shottime2=3;
+                    var yaoguai1 = new yaoguaiModel("img/xiaolong1.gif",1200,(Math.random()*519),(Math.random()*5+7));
+                    var yaoguai2 = new yaoguaiModel("img/xiaolong1.gif",1200,(Math.random()*519),(Math.random()*5+7));
+                    var yaoguai3 = new yaoguaiModel("img/xiaolong1.gif",1200,(Math.random()*519),(Math.random()*5+7));
+                    var yaoguai4 = new yaoguaiModel("img/xiaolong2.gif",1200,(Math.random()*519),(Math.random()*5+7));
+                    var yaoguai5 = new yaoguaiModel("img/xiaolong2.gif",1200,(Math.random()*519),(Math.random()*5+7));
+                    var yaoguai6 = new yaoguaiModel("img/xiaolong2.gif",1200,(Math.random()*519),(Math.random()*5+7));
+                    yaoguai1.blood=3;
+                    yaoguai2.blood=3;
+                    yaoguai3.blood=3;
+                    yaoguai4.blood=3;
+                    yaoguai5.blood=3;
+                    yaoguai6.blood=3;
+                    yaoguai1.imgNode.style.width="240px";
+                    yaoguai2.imgNode.style.width="240px";
+                    yaoguai3.imgNode.style.width="240px";
+                    yaoguai4.imgNode.style.width="240px";
+                    yaoguai5.imgNode.style.width="240px";
+                    yaoguai6.imgNode.style.width="240px";
+                    xiaolongArr.push(yaoguai1);
+                    xiaolongArr.push(yaoguai2);
+                    xiaolongArr.push(yaoguai3);
+                    xiaolongArr.push(yaoguai4);
+                    xiaolongArr.push(yaoguai5);
+                    xiaolongArr.push(yaoguai6);
+                    setTimeout(function(){
+                        bossArr[0].imgNode.src="img/longBoss2.gif";
+                        bossArr[0].imgNode.style.left="590px";
+                        bossArr[0].imgNode.style.width="850px";
+                        paoxiao.play();
+                    },200);
+                    setTimeout(function(){
+                        bossArr[0].imgNode.src="img/Boss.gif";
+                        bossArr[0].imgNode.style.width="500px";
+                        bossArr[0].imgNode.style.left=bl;
+                    },1200)
+                }
+                if(bossArr[0].shottime3==1&&jg==false){
+                    tanhao1.style.display="block";
+                    tanhao1.style.top=Math.random()*500+60+"px";
+                    tanhao2.style.display="block";
+                    tanhao2.style.top=Math.random()*500+60+"px";
+                    tanhao3.style.display="block";
+                    tanhao3.style.top=Math.random()*500+60+"px";
+                    jga = parseInt(tanhao1.style.top)-48;
+                    jgb = parseInt(tanhao2.style.top)-48;
+                    jgc = parseInt(tanhao3.style.top)-48;
+                    count6=3;
+                    jingbaoaudio("audio/jingbao2.wav");
+//            alert("1:"+jga+"2:"+jgb+"3:"+jgc)
+                    jg=true;
+                }
+                if(bossArr[0].shottime3==0){
+                    tanhao1.style.display="none";
+                    tanhao2.style.display="none";
+                    tanhao3.style.display="none";
+                    bossArr[0].shottime3=5;
+                    jiguangmusic.play();
+                    var jiguang = document.createElement("img");
+                    jiguang.src = "img/jiguang.gif";
+                    jiguang.style.position="absolute";
+                    jiguang.style.width="966px";
+                    jiguang.style.left="0";
+                    jiguang.style.top=jga+"px";
+                    var jiguang2 = document.createElement("img");
+                    jiguang2.src = "img/jiguang.gif";
+                    jiguang2.style.position="absolute";
+                    jiguang2.style.width="966px";
+                    jiguang2.style.left="0";
+                    jiguang2.style.top=jgb+"px";
+                    var jiguang3 = document.createElement("img");
+                    jiguang3.src = "img/jiguang.gif";
+                    jiguang3.style.position="absolute";
+                    jiguang3.style.width="966px";
+                    jiguang3.style.left="0";
+                    jiguang3.style.top=jgc+"px";
+                    jiguangArr.push(jiguang);
+                    jiguangArr.push(jiguang2);
+                    jiguangArr.push(jiguang3);
+                    container.appendChild(jiguang);
+                    container.appendChild(jiguang2);
+                    container.appendChild(jiguang3);
+                    setTimeout(function(){
+                        container.removeChild(jiguang);
+                        container.removeChild(jiguang2);
+                        container.removeChild(jiguang3);
+                        jiguangArr.splice(0,3);
+                        jg=false;
+                    },1400);
+
+                }
+            }
+    }
+    //敌对飞机移动函数，超出屏幕删除
+    function smallPlaneMove(){
+        for(var i=0;i<planeArr.length;i++){
+            if(planeArr[i].isDead==false){
+                if(Lv>=12){
+                    planeArr[i].speed=5;
+                    planeArr[i].shottime--;
+                    if(planeArr[i].shottime==0){
+                        planeArr[i].shottime=30;
+                        var Dshot = new planeShot("img/zidan.gif",parseInt(planeArr[i].imgNode.style.left)-20,parseInt(planeArr[i].imgNode.style.top)+70,40);
+                        count3 = 1;
+                        shotaudio("audio/zidan.wav");
+                        direnzidan.push(Dshot);
+                    }
+
+                }
+                planeArr[i].move();
+                if(parseInt(planeArr[i].imgNode.style.left)<-200){
+                    container.removeChild(planeArr[i].imgNode);
+                    planeArr.splice(i,1);
+                }
+            }else{
+                planeArr[i].time--;
+                if(planeArr[i].time==0){
+                    container.removeChild(planeArr[i].imgNode);
+                    planeArr.splice(i,1);
+                }
+            }
+
+        }
+    }
+    //敌人子弹移动
+    function direnshot(){
+        for(var i=0;i<direnzidan.length;i++){
+            direnzidan[i].direnmove();
+            if(parseInt(direnzidan[i].imgNode.style.left)<0){
+                container.removeChild(direnzidan[i].imgNode);
+                direnzidan.splice(i,1);
+            }
+        }
+    }
+    //敌对小飞机模板{imgSrc,x,y,speed}
+    function SsPlaneModel(imgSrc,x,y,speed){
+        this.imgNode=document.createElement("img");
+        this.imgSrc=imgSrc;
+        this.x=x;
+        this.y=y;
+        this.speed=speed;
+        this.isDead=false;
+        this.shottime=20;
+        this.time=40;
+
+        this.move=function(){
+            this.imgNode.style.left=parseInt(this.imgNode.style.left)-this.speed+"px";
+        };
+        this.csh=function(){
+            this.imgNode.src=this.imgSrc;
+            this.imgNode.style.position="absolute";
+            this.imgNode.style.left=this.x+"px";
+            this.imgNode.style.top=this.y+"px";
+            container.appendChild(this.imgNode);
+        };
+        this.csh();
+    }
+    //创建敌对小飞机并放入数组
+    function SsPlaneCreate(){
+        var SsmallPlane = new SsPlaneModel("img/xiaoguai.gif",1500,(Math.random()*548),(Math.random()*10+7));
+        splaneArr.push(SsmallPlane);
+    }
+    function ccPlaneCreate(){
+        var SsmallPlane = new SsPlaneModel("img/xiaoyun.gif",1500,(Math.random()*548),(Math.random()*10+7));
+        splaneArr.push(SsmallPlane);
+    }
+    //敌对小飞机移动函数，超出屏幕删除
+    function SsPlaneMove(){
+        for(var i=0;i<splaneArr.length;i++){
+            if(splaneArr[i].isDead==false){
+                if(Lv>=7){
+                    splaneArr[i].speed=(Math.random()*10+4);
+                    splaneArr[i].shottime--;
+                    if(splaneArr[i].shottime==0){
+                        splaneArr[i].shottime=150;
+                        var Dshot = new planeShot("img/xiaoguaishot.gif",parseInt(splaneArr[i].imgNode.style.left)+10,parseInt(splaneArr[i].imgNode.style.top)+20,30);
+                        count4 = 1;
+                        sshotaudio("audio/smallshot.wav");
+                        direnzidan.push(Dshot);
+                    }
+                }
+                splaneArr[i].move();
+            }else{
+                splaneArr[i].time--;
+                if(splaneArr[i].time==0){
+                    container.removeChild(splaneArr[i].imgNode);
+                    splaneArr.splice(i,1);
+                }
+            }
+            if(parseInt(splaneArr[i].imgNode.style.left)<-200){
+                container.removeChild(splaneArr[i].imgNode);
+                splaneArr.splice(i,1);
+            }
+
+        }
+    }
+    //敌对小妖怪模板{imgSrc,x,y,speed}
+    function yaoguaiModel(imgSrc,x,y,speed){
+        this.imgNode=document.createElement("img");
+        this.imgSrc=imgSrc;
+        this.x=x;
+        this.y=y;
+        this.speed=speed;
+        this.isDead=false;
+        this.time=40;
+        this.blood=4;
+
+        this.move=function(){
+            this.imgNode.style.left=parseInt(this.imgNode.style.left)-this.speed+"px";
+        };
+        this.csh=function(){
+            this.imgNode.src=this.imgSrc;
+            this.imgNode.style.position="absolute";
+            this.imgNode.style.width="100px";
+            this.imgNode.style.left=this.x+"px";
+            this.imgNode.style.top=this.y+"px";
+            container.appendChild(this.imgNode);
+        };
+        this.csh();
+    }
+    //创建敌对小妖怪并放入数组
+    function yaoguaiCreate(){
+        if(Lv>=3){
+            var yaoguai = new yaoguaiModel("img/xiaoyao.gif",1200,(Math.random()*499),(Math.random()*15+6));
+            if(Lv>=6){
+                yaoguai.blood=6;
+            }
+            if(Lv>=12){
+                yaoguai.blood=8;
+            }
+            yaoguaiArr.push(yaoguai);
+        }
+    }
+    function dayanCreate(){
+        if(Lv>=3){
+            var yaoguai2 = new yaoguaiModel("img/dargon3.gif",1200,(Math.random()*499),(Math.random()*15+6));
+            if(Lv>=6){
+                yaoguai2.blood=6;
+            }
+            if(Lv>=12){
+                yaoguai2.blood=8;
+            }
+            yaoguaiArr.push(yaoguai2);
+        }
+    }
+//    敌对小妖怪移动函数，超出屏幕删除
+    function yaoguaiMove(){
+
+        for(var i=0;i<yaoguaiArr.length;i++){
+            if(Lv>=9){
+                yaoguaiArr[i].speed=(Math.random()*15)+20;
+            }
+            if(yaoguaiArr[i].isDead==false){
+                yaoguaiArr[i].move();
+                if(parseInt(yaoguaiArr[i].imgNode.style.left)<-200){
+                    container.removeChild(yaoguaiArr[i].imgNode);
+                    yaoguaiArr.splice(i,1);
+                }
+            }else{
+                yaoguaiArr[i].time--;
+                if(yaoguaiArr[i].time==0){
+                    container.removeChild(yaoguaiArr[i].imgNode);
+                    yaoguaiArr.splice(i,1);
+                }
+            }
+
+        }
+    }
+
+    function xiaolongMove(){
+        for(var i=0;i<xiaolongArr.length;i++){
+            if(xiaolongArr[i].isDead==false){
+                xiaolongArr[i].move();
+                if(parseInt(xiaolongArr[i].imgNode.style.left)<-200){
+                    container.removeChild(xiaolongArr[i].imgNode);
+                    xiaolongArr.splice(i,1);
+                }
+            }else{
+                xiaolongArr[i].time--;
+                if(xiaolongArr[i].time==0){
+                    container.removeChild(xiaolongArr[i].imgNode);
+                    xiaolongArr.splice(i,1);
+                }
+            }
+        }
+    }
+    //敌对靶子模板{imgSrc,x,y,speed}
+    function baZiModel(imgSrc,x,y,speed){
+        this.imgNode=document.createElement("img");
+        this.imgSrc=imgSrc;
+        this.x=x;
+        this.y=y;
+        this.speed=speed;
+        this.isDead=false;
+        this.time=240;
+        this.blood=5;
+
+
+        this.move=function(){
+            this.imgNode.style.left=parseInt(this.imgNode.style.left)-this.speed+"px";
+        };
+        this.Deadmove= function () {
+            this.imgNode.style.left=parseInt(this.imgNode.style.left)-3+"px";
+        };
+        this.csh=function(){
+            this.imgNode.src=this.imgSrc;
+            this.imgNode.style.width="80px";
+            this.imgNode.style.position="absolute";
+            this.imgNode.style.left=this.x+"px";
+            this.imgNode.style.top=this.y+"px";
+            container.appendChild(this.imgNode);
+        };
+        this.csh();
+    }
+    //创建敌对靶子并放入数组
+    function baZiCreate(){
+        var baZi = new baZiModel("img/bazi.png",1500,(Math.random()*510),(Math.random()*10+2));
+        baziArr.push(baZi);
+    }
+    //敌对靶子移动函数，超出屏幕删除
+    function baZiMove(){
+        for(var i=0;i<baziArr.length;i++){
+            if(baziArr[i].isDead==false){
+                baziArr[i].move();
+                if(parseInt(baziArr[i].imgNode.style.left)<-200){
+                    container.removeChild(baziArr[i].imgNode);
+                    baziArr.splice(i,1);
+                }
+            }else{
+                baziArr[i].time--;
+                baziArr[i].Deadmove();
+                if(baziArr[i].time==0){
+                    container.removeChild(baziArr[i].imgNode);
+                    baziArr.splice(i,1);
+                }
+            }
+        }
+    }
+    //子弹移动
+    function shotMove(){
+        for(var i=0;i<zidanArr.length;i++){
+            zidanArr[i].move();
+            if(parseInt(zidanArr[i].imgNode.style.left)>1320){
+                container.removeChild(zidanArr[i].imgNode);
+                zidanArr.splice(i,1);
+            }
+        }
+
+    }
+    //玩家飞机模板
+    function playerPlane(imgSrc,x,y){
+        this.imgNode=document.createElement("img");
+        this.imgSrc=imgSrc;
+        this.x=x;
+        this.y=y;
+        this.speed=sd;
+        this.blood=3;
+        this.wudi=false;
+        this.wuditime=200;
+
+        this.shot=function(){
+            if(zidanArr.length<a){
+                var shot = new planeShot("img/qigong.gif",parseInt(this.imgNode.style.left)+120,parseInt(this.imgNode.style.top)+30,10);
+                zidanArr.push(shot);
+//            var shot1 = new planeShot("img/zidan.png",parseInt(this.imgNode.style.left)+120,parseInt(this.imgNode.style.top)-10,40);
+//            zidanArr.push(shot1);
+            }
+
+        };
+        this.moveLeft=function(){
+            this.imgNode.style.left=parseInt(this.imgNode.style.left)-this.speed+"px";
+        };
+        this.moveTop=function(){
+            this.imgNode.style.top=parseInt(this.imgNode.style.top)-this.speed+"px"
+        };
+        this.moveBottom=function(){
+            this.imgNode.style.top=parseInt(this.imgNode.style.top)+this.speed+"px"
+        };
+        this.moveRight=function(){
+            this.imgNode.style.left=parseInt(this.imgNode.style.left)+this.speed+"px";
+        };
+        this.csh=function(){
+            this.imgNode.src=this.imgSrc;
+            this.imgNode.style.width="120px";
+            this.imgNode.style.position="absolute";
+            this.imgNode.style.left=this.x+"px";
+            this.imgNode.style.top=this.y+"px";
+            container.appendChild(this.imgNode);
+        };
+        this.csh();
+    }
+
+    //按下改变标志
+    document.body.onkeydown=function(){
+        var De=window.event||arguments[0];
+        if(game.style.display=="block"){
+            if(De.keyCode==37){
+                moveL=true;
+            }
+            if(De.keyCode==38){
+                moveU=true;
+            }
+            if(De.keyCode==39){
+                moveR=true;
+            }
+            if(De.keyCode==40){
+                moveB=true;
+            }
+            if(De.keyCode==32){
+                Fire=true;
+            }
+            if(De.keyCode==66){
+                allremove();
+            }
+        }
+    };
+    //全部清除
+    var iii = document.createElement("img");
+    container.appendChild(iii);
+    function allremove(){
+        if(bomb>0){
+            dazhao.play();
+            player1.imgNode.src="img/xixueguifight.gif";
+            player1.imgNode.style.width="110px";
+            player1.imgNode.style.left=parseInt(player1.imgNode.style.left)+18+"px";
+            player1.imgNode.style.top=parseInt(player1.imgNode.style.top)-18+"px";
+            if(bombboom==true){
+                bombboom=false;
+                iii.src = "img/111111.gif";
+                iii.style.position="absolute";
+                iii.style.width="500px";
+                iii.style.left="383px";
+                iii.style.top="-20px";
+                container.style.webkitFilter="brightness(0.7)";
+                //无敌状态
+                if(player1.wudi==false){
+                    player1.wudi=true;
+                }
+                setTimeout(function(){
+                    for(var i=0;i<splaneArr.length;i++){
+                        splaneArr[i].imgNode.src="img/boom.gif";
+                        splaneArr[i].imgNode.style.width="55px";
+                        splaneArr[i].isDead=true;
+                        count2 = 1;
+                        boomaudio("audio/boom.wav");
+                        scoreNum+=1;
+                        score.innerHTML=scoreNum;
+                    }
+                    for(var j=0;j<planeArr.length;j++){
+                        planeArr[j].imgNode.src="img/boom.gif";
+                        planeArr[j].isDead=true;
+                        scoreNum+=5;
+                        score.innerHTML=scoreNum;
+                    }
+                    for(var k=0;k<yaoguaiArr.length;k++){
+                        yaoguaiArr[k].imgNode.src = "img/boom.gif";
+                        yaoguaiArr[k].isDead = true;
+                        scoreNum += 3;
+                        score.innerHTML = scoreNum;
+                    }
+                    for(var l=0;l<baziArr.length;l++){
+                        baziArr[l].imgNode.src ="img/baoxiang.gif";
+                        baziArr[l].imgNode.style.width="80px";
+                        baziArr[l].isDead = true;
+                        scoreNum += 3;
+                        score.innerHTML = scoreNum;
+                    }
+                    for(var m=0;m<xiaolongArr.length;m++){
+                        xiaolongArr[m].imgNode.src = "img/boom.gif";
+                        xiaolongArr[m].imgNode.style.width="100px";
+                        xiaolongArr[m].isDead = true;
+                    }
+                },1200);
+                bomb--;
+                var bombImg = grade.getElementsByTagName("img");
+                grade.removeChild(bombImg[0]);
+                setTimeout(function(){
+//                    container.removeChild(iii);
+                    iii.src = "img/111111.png";
+                    container.style.webkitFilter="brightness(1)";
+                    bombboom=true;
+                    player1.imgNode.src="img/xixuegui.gif";
+                    player1.imgNode.style.width="120px";
+                    player1.imgNode.style.left=parseInt(player1.imgNode.style.left)-18+"px";
+                    player1.imgNode.style.top=parseInt(player1.imgNode.style.top)+18+"px";
+                    player1.wudi=false;
+                },1800);
+            }
+
+        }
+    }
+    //松开改变标志
+    document.body.onkeyup=function(){
+        var Ue=window.event||arguments[0];
+        if(Ue.keyCode==37){
+            moveL=false;
+        }
+        if(Ue.keyCode==38){
+            moveU=false;
+        }
+        if(Ue.keyCode==39){
+            moveR=false;
+        }
+        if(Ue.keyCode==40){
+            moveB=false;
+        }
+        if(Ue.keyCode==32){
+            Fire=false;
+
+        }
+    };
+    var fireTime = 5;
+    //玩家飞机移动
+    function planeMove(){
+        if(moveL==true){
+            if(parseInt(player1.imgNode.style.left)>0){
+                player1.moveLeft();
+            }
+        }
+        if(moveU==true){
+            if(parseInt(player1.imgNode.style.top)>0){
+                player1.moveTop();
+            }
+        }
+        if(moveR==true){
+            if(parseInt(player1.imgNode.style.left)<1250) {
+                player1.moveRight();
+            }
+        }
+        if(moveB==true){
+            if(parseInt(player1.imgNode.style.top)<515) {
+                player1.moveBottom();
+            }
+        }
+        if(Fire==true) {
+            fireTime--;
+            if(fireTime==0){
+                fireTime=5;
+                if(danjia>0){
+                    count = 1;
+                    audio("audio/shot.wav");
+                }else{
+//                audio("audio/nozidan.wav");
+                }
+                player1.shot();
+            }
+        }
+    }
+
+    //子弹模板
+    function planeShot(imgsrc,x,y,direnspeed){
+        this.imgNode=document.createElement("img");
+        this.imgsrc=imgsrc;
+        this.x=x;
+        this.y=y;
+        this.speed=zdsd;
+        this.speed2=direnspeed;
+
+        this.direnmove=function(){
+            this.imgNode.style.left=parseInt(this.imgNode.style.left)-this.speed2+"px";
+        };
+        this.move=function(){
+            this.imgNode.style.left=parseInt(this.imgNode.style.left)+this.speed+"px";
+        };
+        this.csh=function(){
+            this.imgNode.src=this.imgsrc;
+            this.imgNode.style.width="60px";
+            this.imgNode.style.position="absolute";
+            this.imgNode.style.left=this.x+"px";
+            this.imgNode.style.top=this.y+"px";
+            container.appendChild(this.imgNode);
+        };
+        this.csh();
+    }
+    //判断碰撞
+    function pengzhuang(){
+        for(var s=0;s<zidanArr.length;s++){
+            for(var t=0;t<direnzidan.length;t++){
+                var DzidL=parseInt(direnzidan[t].imgNode.style.left);
+                var DzidT=parseInt(direnzidan[t].imgNode.style.top);
+                var zidT=parseInt(zidanArr[s].imgNode.style.top);
+                var zidL=parseInt(zidanArr[s].imgNode.style.left);
+                if(zidL+60>=DzidL&&zidL<=DzidL+60&&zidT+31>=DzidT&&zidT<=DzidT+24){
+                    container.removeChild(zidanArr[s].imgNode);
+                    zidanArr.splice(s,1);
+                    container.removeChild(direnzidan[t].imgNode);
+                    direnzidan.splice(t,1);
+                }
+            }
+        }
+        for(var i=0;i<splaneArr.length;i++){
+            for(var j=0;j<zidanArr.length;j++){
+                var zdL=parseInt(zidanArr[j].imgNode.style.left);
+                var zdT=parseInt(zidanArr[j].imgNode.style.top);
+                var plL=parseInt(splaneArr[i].imgNode.style.left);
+                var plT=parseInt(splaneArr[i].imgNode.style.top);
+                if(splaneArr[i].isDead==false){
+                    if(zdL>=plL&&zdL<=plL+55&&zdT>=plT-10&&zdT<=plT+52){
+                        container.removeChild(zidanArr[j].imgNode);
+                        zidanArr.splice(j,1);
+                        splaneArr[i].imgNode.src="img/boom.gif";
+                        splaneArr[i].imgNode.style.width="55px";
+                        splaneArr[i].isDead=true;
+                        count2 = 1;
+                        boomaudio("audio/boom.wav");
+                        scoreNum+=1;
+                        score.innerHTML=scoreNum;
+                    }
+                }
+            }
+        }
+        for(var o=0;o<yaoguaiArr.length;o++){
+            for(var p=0;p<zidanArr.length;p++){
+                var zd3L=parseInt(zidanArr[p].imgNode.style.left);
+                var zd3T=parseInt(zidanArr[p].imgNode.style.top);
+                var ygL=parseInt(yaoguaiArr[o].imgNode.style.left);
+                var ygT=parseInt(yaoguaiArr[o].imgNode.style.top);
+                if(yaoguaiArr[o].isDead==false){
+                    if(zd3L>=ygL&&zd3L<=ygL+103&&zd3T>=ygT-10&&zd3T<=ygT+81){
+                        container.removeChild(zidanArr[p].imgNode);
+                        zidanArr.splice(p,1);
+                        yaoguaiArr[o].blood-=1;
+                        if(yaoguaiArr[o].blood==0) {
+                            yaoguaiArr[o].imgNode.src = "img/boom.gif";
+//                            yaoguaiArr[o].imgNode.width = "100px"
+                            yaoguaiArr[o].isDead = true;
+                            count2 = 1;
+                            boomaudio("audio/boom.wav");
+                            scoreNum += 3;
+                            score.innerHTML = scoreNum;
+                        }
+                    }
+                }
+
+            }
+        }
+        for(var q=0;q<baziArr.length;q++){
+            for(var r=0;r<zidanArr.length;r++){
+                var zd4L=parseInt(zidanArr[r].imgNode.style.left);
+                var zd4T=parseInt(zidanArr[r].imgNode.style.top);
+                var bzL=parseInt(baziArr[q].imgNode.style.left);
+                var bzT=parseInt(baziArr[q].imgNode.style.top);
+                    if(baziArr[q].isDead==false){
+                        if(zd4L>=bzL&&zd4L<=bzL+81&&zd4T>=bzT&&zd4T<=bzT+85){
+                            container.removeChild(zidanArr[r].imgNode);
+                            zidanArr.splice(r,1);
+                            baziArr[q].blood-=1;
+                            if(baziArr[q].blood==0) {
+                                baziArr[q].imgNode.src ="img/baoxiang.gif";
+                                baziArr[q].imgNode.style.width="100px";
+                                baziArr[q].isDead = true;
+                                count2 = 1;
+                                boomaudio("audio/boom.wav");
+                                scoreNum += 3;
+                                score.innerHTML =scoreNum;
+                            }
+                        }
+                    }
+                }
+            }
+        for(var k=0;k<planeArr.length;k++){
+            for(var l=0;l<zidanArr.length;l++){
+                var zd22L=parseInt(zidanArr[l].imgNode.style.left);
+                var zd22T=parseInt(zidanArr[l].imgNode.style.top);
+                var dgL=parseInt(planeArr[k].imgNode.style.left);
+                var dgT=parseInt(planeArr[k].imgNode.style.top);
+                if(planeArr[k].isDead==false){
+                    if(zd22L>=dgL&&zd22L<=dgL+120&&zd22T>=dgT&&zd22T<=dgT+117){
+                        container.removeChild(zidanArr[l].imgNode);
+                        zidanArr.splice(l,1);
+                        planeArr[k].blood-=1;
+                        if(planeArr[k].blood==0){
+                            planeArr[k].imgNode.src="img/boom.gif";
+                            planeArr[k].isDead=true;
+                            count2 = 1;
+                            boomaudio("audio/boom.wav");
+                            scoreNum+=5;
+                            score.innerHTML=scoreNum;
+                        }
+                    }
+                }
+            }
+        }
+        for(var v=0;v<xiaolongArr.length;v++){
+            for(var w=0;w<zidanArr.length;w++){
+                var zdLL=parseInt(zidanArr[w].imgNode.style.left);
+                var zdLT=parseInt(zidanArr[w].imgNode.style.top);
+                var xlL=parseInt(xiaolongArr[v].imgNode.style.left);
+                var xlT=parseInt(xiaolongArr[v].imgNode.style.top);
+                if(xiaolongArr[v].isDead==false){
+                    if(zdLL>=xlL&&zdLL<=xlL+230&&zdLT>=xlT&&zdLT<=xlT+125){
+                        container.removeChild(zidanArr[w].imgNode);
+                        zidanArr.splice(w,1);
+                        xiaolongArr[v].blood-=1;
+                        if(xiaolongArr[v].blood==0){
+                            xiaolongArr[v].imgNode.src="img/boom.gif";
+                            xiaolongArr[v].imgNode.style.width="100px";
+                            xiaolongArr[v].isDead=true;
+                            count2 = 1;
+                            boomaudio("audio/boom.wav");
+                        }
+                    }
+                }
+            }
+        }
+
+        if(bossArr.length>0){
+            for(var u=0;u<zidanArr.length;u++){
+                var BossL = parseInt(bossArr[0].imgNode.style.left);
+                var BossT = parseInt(bossArr[0].imgNode.style.top);
+                var zid2L=parseInt(zidanArr[u].imgNode.style.left);
+                var zid2T=parseInt(zidanArr[u].imgNode.style.top);
+                if(bossArr[0].isDead==false){
+                    if(zid2L+60>=BossL+100&&zid2L<=BossL+500&&zid2T+31>=BossT+200&&zid2T<=BossT+574){
+                        container.removeChild(zidanArr[u].imgNode);
+                        zidanArr.splice(u,1);
+                        count5=1;
+                        dajiaudio("audio/daji.wav");
+                        bossArr[0].blood--;
+                        if(bossArr[0].blood==0){
+//                        Boss.isDead=true;
+                            over.style.backgroundImage="url(img/3f04victory.png)";
+                            over.style.display="block";
+                            overscore.innerHTML=scoreNum;
+                            game.style.disabled=true;
+                            game.style.display="none";
+                            bgmusic.pause();
+                            music.volume=0;
+                            music2.volume=0;
+                            music3.volume=0;
+                            music4.volume=0;
+                            music5.volume=0;
+                            music6.volume=0;
+                            shengJiMusic.volume=0;
+                            baoxiangMusic.volume=0;
+                            shoushang.volume=0;
+                            dazhao.volume=0;
+                            paoxiao.volume=0;
+                            jiguangmusic.volume=0;
+                            shengli.play();
+                            shengli.addEventListener("ended",function(){
+                                shenglibgm.play();
+                            })
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+    }
+
+    //判断玩家飞机碰撞
+    function playerpengzhuang(){
+        var playerL = parseInt(player1.imgNode.style.left);
+        var playerT = parseInt(player1.imgNode.style.top);
+        for(var i = 0;i<splaneArr.length;i++){
+            var plL=parseInt(splaneArr[i].imgNode.style.left);
+            var plT=parseInt(splaneArr[i].imgNode.style.top);
+            if(splaneArr[i].isDead==false){
+                if(playerL+100>=plL&&playerL<=plL+55&&playerT+80>=plT&&playerT<=plT+52){
+                    if(player1.wudi==false){
+                            if(player1.blood>1){
+                                player1.blood--;
+                                shoushang.play();
+                                player1.wudi=true;
+                                player1.imgNode.src="img/xixuegui.png";
+                            }else{
+                                stopAll();
+                            }
+                    }
+                }
+            }
+        }
+        for(var j = 0;j<yaoguaiArr.length;j++){
+            var ygL=parseInt(yaoguaiArr[j].imgNode.style.left);
+            var ygT=parseInt(yaoguaiArr[j].imgNode.style.top);
+            if(yaoguaiArr[j].isDead==false){
+                if(playerL+100>=ygL&&playerL<=ygL+100&&playerT+80>=ygT&&playerT<=ygT+70){
+                    if(player1.wudi==false){
+                        if(player1.blood>1){
+                            player1.blood--;
+                            shoushang.play();
+                            player1.wudi=true;
+                            player1.imgNode.src="img/xixuegui.png";
+                        }else{
+                            stopAll();
+                        }
+                    }
+                }
+            }
+        }
+        for(var m = 0;m<xiaolongArr.length;m++){
+            var xlL=parseInt(xiaolongArr[m].imgNode.style.left);
+            var xlT=parseInt(xiaolongArr[m].imgNode.style.top);
+            if(xiaolongArr[m].isDead==false){
+                if(playerL+100>=xlL+100&&playerL<=xlL+230&&playerT+80>=xlT&&playerT<=xlT+125){
+                    if(player1.wudi==false){
+                        if(player1.blood>1){
+                            player1.blood--;
+                            shoushang.play();
+                            player1.wudi=true;
+                            player1.imgNode.src="img/xixuegui.png";
+                        }else{
+                            stopAll();
+                        }
+                    }
+                }
+            }
+        }
+        for(var k = 0;k<planeArr.length;k++){
+            var dgL=parseInt(planeArr[k].imgNode.style.left);
+            var dgT=parseInt(planeArr[k].imgNode.style.top);
+            if(planeArr[k].isDead==false){
+                if(playerL+100>=dgL&&playerL<=dgL+120&&playerT+80>=dgT&&playerT<=dgT+117){
+                    if(player1.wudi==false){
+                        if(player1.blood>1){
+                            player1.blood--;
+                            shoushang.play();
+                            player1.wudi=true;
+                            player1.imgNode.src="img/xixuegui.png";
+                        }else{
+                            stopAll();
+                        }
+                    }
+                }
+            }
+        }
+        //被子弹击中
+        for(var m = 0;m<direnzidan.length;m++){
+            var dzdL=parseInt(direnzidan[m].imgNode.style.left);
+            var dzdT=parseInt(direnzidan[m].imgNode.style.top);
+            if(playerL+100>=dzdL&&playerL<=dzdL+60&&playerT+80>=dzdT&&playerT<=dzdT+24){
+                if(player1.wudi==false){
+                    if(player1.blood>1){
+                        player1.blood--;
+                        shoushang.play();
+                        player1.wudi=true;
+                        player1.imgNode.src="img/xixuegui.png";
+                    }else{
+                        stopAll();
+                    }
+                }
+            }
+        }
+        for(var n = 0;n<jiguangArr.length;n++){
+            var jgL=parseInt(jiguangArr[n].style.left);
+            var jgT=parseInt(jiguangArr[n].style.top);
+            if(playerL+100>=jgL&&playerL<=jgL+966&&playerT+80>=jgT+50&&playerT<=jgT+100){
+                if(player1.wudi==false){
+                    if(player1.blood>1){
+                        player1.blood--;
+                        shoushang.play();
+                        player1.wudi=true;
+                        player1.imgNode.src="img/xixuegui.png";
+                    }else{
+                        stopAll();
+                    }
+                }
+            }
+        }
+        for(var l = 0;l<baziArr.length;l++){
+            var bzL=parseInt(baziArr[l].imgNode.style.left);
+            var bzT=parseInt(baziArr[l].imgNode.style.top);
+            if(baziArr[l].isDead==false){
+                if(playerL+100>=bzL&&playerL<=bzL+81&&playerT+80>=bzT&&playerT<=bzT+85){
+                    if(player1.wudi==false){
+                        if(player1.blood>1){
+                            player1.blood--;
+                            shoushang.play();
+                            player1.wudi=true;
+                            player1.imgNode.src="img/xixuegui.png";
+                        }else{
+                            stopAll();
+                        }
+                    }
+                }
+            }else{
+                if(playerL+100>=bzL&&playerL<=bzL+60&&playerT+80>=bzT&&playerT<=bzT+60){
+                    container.removeChild(baziArr[l].imgNode);
+                    baziArr.splice(l,1);
+                    scoreNum=scoreNum+parseInt(Math.random()*50);
+                    baoxiangMusic.play();
+                    score.innerHTML =scoreNum;
+                }
+            }
+        }
+        if(bossArr.lenth>0){
+            var BossL = parseInt(bossArr[0].imgNode.style.left);
+            var BossT = parseInt(bossArr[0].imgNode.style.top);
+            if(playerL+100>=BossL&&playerL<=BossL+500&&playerT+80>=BossT+200&&playerT<=BossT+574) {
+                if(player1.wudi==false){
+                    if(player1.blood>1){
+                        player1.blood--;
+                        shoushang.play();
+                        player1.wudi=true;
+                        player1.imgNode.src="img/xixuegui.png";
+                    }else{
+                        stopAll();
+                    }
+                }
+            }
+        }
+
+        if(player1.wudi==true){
+            player1.wuditime--;
+            if(player1.wuditime==0){
+                player1.imgNode.src="img/xixuegui.gif";
+                player1.wudi=false;
+                player1.wuditime=200;
+            }
+        }
+
+    }
+    //事件
+
+    function shijian(){
+            var Lv2=Lv;
+            if(Lv>=15){
+                Lv=15;
+                Lvobj.innerHTML=Lv;
+            }else if(Lv>0&&Lv<=5){
+                Lv = parseInt(scoreNum/50)+1;
+                scoreNUm2=scoreNum;
+                if(Lv>Lv2){
+                    shengJiMusic.play();
+                    tishi.innerHTML="Mission"+Lv;
+                    tishi.style.display="block";
+                }
+                if(tishi.style.display=="block"){
+                    tishitime--;
+                    if(tishitime==0){
+                        tishitime=200;
+                        tishi.style.display="none";
+                    }
+                }
+                Lvobj.innerHTML=Lv;
+            }else if(Lv>5&&Lv<=15){
+//                alert(scoreNum-scoreNUm2/100)
+                Lv = parseInt((scoreNum-scoreNUm2)/100)+parseInt(scoreNUm2/50)+1;
+                if(Lv>Lv2){
+                    shengJiMusic.play();
+                    tishi.innerHTML="Mission"+Lv;
+                    tishi.style.display="block";
+                }
+                if(tishi.style.display=="block"){
+                    tishitime--;
+                    if(tishitime==0){
+                        tishitime=200;
+                        tishi.style.display="none";
+                    }
+                }
+                Lvobj.innerHTML=Lv;
+            }
+            a=Lv*5;
+            var cc=zidanArr.length;
+            danjia = a-cc;
+            capacity.innerHTML=danjia;
+            if(Lv<4){
+                sd=Lv*5;
+            }
+            if(Lv>=2&&Lv<=15){
+                for(var i=0;i<zidanArr.length;i++){
+                    zidanArr[i].speed=zdsd+3*Lv;
+                }
+            }
+            player1.speed=sd;
+            if(Lv>=6){
+                player1.shot=function(){
+                    if(zidanArr.length<a){
+                        var shot = new planeShot("img/qigong.gif",parseInt(this.imgNode.style.left)+120,parseInt(this.imgNode.style.top)+30);
+                        var shot1 = new planeShot("img/qigong.gif",parseInt(this.imgNode.style.left)+120,parseInt(this.imgNode.style.top)+50);
+                        zidanArr.push(shot);
+                        zidanArr.push(shot1);
+                    }
+
+                };
+            }
+            if(Lv>=12){
+                player1.shot=function(){
+                    if(zidanArr.length<a){
+                        var shot = new planeShot("img/qigong.gif",parseInt(this.imgNode.style.left)+120,parseInt(this.imgNode.style.top)+30);
+                        var shot1 = new planeShot("img/qigong.gif",parseInt(this.imgNode.style.left)+120,parseInt(this.imgNode.style.top)+50);
+                        var shot2 = new planeShot("img/qigong.gif",parseInt(this.imgNode.style.left)+120,parseInt(this.imgNode.style.top)+10);
+                        zidanArr.push(shot);
+                        zidanArr.push(shot1);
+                        zidanArr.push(shot2);
+                    }
+                };
+            }
+
+//            console.log(pb);
+            if(player1.blood<pb){
+                pb = player1.blood;
+                var lifeImg = grade.getElementsByTagName("div");
+                grade.removeChild(lifeImg[0]);
+            }
+
+    }
+
+    // html5：audio声音多次播放
+    function audio(msrc) {
+        if (!music) {
+            music = new Audio();
+            music.addEventListener("ended", function (){
+                if (count > 0) {
+                    audio(msrc);
+                }
+            });
+        } else {
+//            music.pause();
+        }
+
+        music.src = msrc;
+
+        music.play();
+
+//        console.log(count);
+        count--;
+    }
+    function boomaudio(msrc) {
+        if (!music2) {
+            music2 = new Audio();
+            music2.addEventListener("ended", function (){
+                if (count2 > 0) {
+                    boomaudio(msrc);
+                }
+            });
+        } else {
+//            music2.pause();
+        }
+        music2.src = msrc;
+
+        music2.play();
+        count2--;
+    }
+    function shotaudio(msrc) {
+        if (!music3) {
+            music3 = new Audio();
+            music3.addEventListener("ended", function (){
+                if (count3 > 0) {
+                    shotaudio(msrc);
+                }
+            });
+        } else {
+//            music3.pause();
+        }
+        music3.src = msrc;
+
+        music3.play();
+        count3--;
+    }
+    function sshotaudio(msrc) {
+        if (!music4) {
+            music4 = new Audio();
+            music4.addEventListener("ended", function (){
+                if (count4 > 0) {
+                    sshotaudio(msrc);
+                }
+            });
+        } else {
+//            music4.pause();
+        }
+        music4.src = msrc;
+
+        music4.play();
+        count4--;
+    }
+    function dajiaudio(msrc) {
+        if (!music5) {
+            music5 = new Audio();
+            music5.addEventListener("ended", function (){
+                if (count5 > 0) {
+                    dajiaudio(msrc);
+                }
+            });
+        } else {
+//            music5.pause();
+        }
+        music5.src = msrc;
+
+        music5.play();
+        count5--;
+    }
+    function jingbaoaudio(msrc) {
+        if (!music6) {
+            music6 = new Audio();
+            music6.addEventListener("ended", function (){
+                if (count6 > 0) {
+                    jingbaoaudio(msrc);
+                }
+            });
+        } else {
+//            music6.pause();
+        }
+        music6.src = msrc;
+        music6.play();
+        count6--;
+    }
+    function stopAll(){
+        if(game.style.display=="block"){
+            over.style.display="block";
+            overscore.innerHTML=scoreNum;
+            game.style.display="none";
+            bgmusic.pause();
+            shibai.play();
+            music.volume=0;
+            music2.volume=0;
+            music3.volume=0;
+            music4.volume=0;
+            music5.volume=0;
+            music6.volume=0;
+            shengJiMusic.volume=0;
+            baoxiangMusic.volume=0;
+            dazhao.volume=0;
+            paoxiao.volume=0;
+            jiguangmusic.volume=0;
+            game.style.disabled=true;
+            shibai.addEventListener("ended",function(){
+                shibaiBgm.play();
+            })
+        }
+    }
+    function stopshotmusic(obj){
+        if(musicon==true){
+            music.volume=0;
+            music2.volume=0;
+            music3.volume=0;
+            music4.volume=0;
+            music5.volume=0;
+            music6.volume=0;
+            shengJiMusic.volume=0;
+            baoxiangMusic.volume=0;
+            dazhao.volume=0;
+            paoxiao.volume=0;
+            shoushang.volume=0;
+            jiguangmusic.volume=0;
+            musicon=false;
+            obj.style.backgroundImage="url(img/laba2.png)";
+        }else{
+            music.volume=0.4;
+            music2.volume=0.3;
+            music3.volume=0.4;
+            music4.volume=0.4;
+            music5.volume=0.4;
+            music6.volume=0.4;
+            shengJiMusic.volume=0.8;
+            baoxiangMusic.volume=0.8;
+            paoxiao.volume=0.4;
+            shoushang.volume=0.4;
+            jiguangmusic.volume=0.4;
+            dazhao.volume=1;
+            musicon=true;
+            obj.style.backgroundImage="url(img/laba.png)";
+        }
+    }
+</script>
+</html>
