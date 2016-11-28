@@ -15,11 +15,18 @@ body{
     cursor: url("../img/cursor.png"),auto;
 }
 html,body{
-    width: 100%;
+    width: 1366px;
+    min-height: 590px;
+    max-height: 700px;margin: 0 auto;overflow: hidden;
     height: 100%;
 }
-#container{
+#game{
     margin: 0 auto;
+
+    width: 100%;
+}
+#container{
+
     width: 100%;
     height: 100%;
     /*border: 1px solid;*/
@@ -46,7 +53,7 @@ html,body{
     font-family: cursive;
 }
 #grade{
-    width: 100%;
+    width: 1366px;
     height: 42px;
     color: #6f6f6f;
     background: url("../img/title.png") -30px no-repeat;
