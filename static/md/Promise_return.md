@@ -80,6 +80,29 @@ Promise对象下调用.then方法就可以把异步排个顺序
 
 使用return链式调用、这样代码就清晰明了
 
+也可以直接
+	
+	test.func1().then(test.func2()).then(test.func3()).then(function(value){
+		console.log(value)
+	})
+
 希望可以帮助到大家
+
+补充、使用async和await可以这样写：
+
+	async function __f(){
+		try{
+			var a = await test.func1();
+			console.log(a);
+		} catch(err){
+			console.log(err);
+		}
+		var b = await test.func2().catch(function (err){
+	    	console.log(err);
+	  	});
+		console.log(b);
+		var c = await test.func3();
+		console.log(c);
+	}
 ___
 本文出自————[http://liujians.me](http://liujians.me)
