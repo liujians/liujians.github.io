@@ -26,7 +26,7 @@ CSS3的calc计算
 	  font-size: calc(var(--size) * 1px);
 	}
 
-附：张鑫旭的响应式变量布局分列
+附：张鑫旭的响应式变量布局分列、更好维护、只是兼容性不支持IE
 
 	.box {
 	    --columns: 4;
