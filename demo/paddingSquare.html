@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>响应式的正方形</title>
+</head>
+<style>
+  *{
+    padding: 0;
+    margin: 0;
+  }
+  .list{
+    width: 100%;
+    padding: 5px 16px;
+    box-sizing: border-box;
+  }
+  /*用padding的方式*/
+  .square-box{
+    margin: 5px auto;
+    padding: 0 5px;
+    box-sizing: border-box;
+    float:left;
+    width:calc(100%/3)
+  }
+  .square{
+    width: calc(100%);
+    padding-bottom: 100%;
+    background: red;
+    box-sizing: border-box;
+  }
+  /*用calc的方式*/
+  /*.square-box{
+    margin: 5px auto;
+    box-sizing: border-box;
+    float:left;
+    width:calc(100%/3)
+  }
+  .square{
+    margin: 0 auto;
+    width: calc(100% - 16px * 2);
+    padding-bottom: calc(100% - 16px * 2);
+    background: red;
+    box-sizing: border-box;
+  }*/
+</style>
+<body>
+  <div class="list">
+    <div class="square-box">
+      <div class="square"></div>
+    </div>
+    <div class="square-box">
+      <div class="square"></div>
+    </div>
+    <div class="square-box">
+      <div class="square"></div>
+    </div>
+    <div class="square-box">
+      <div class="square"></div>
+    </div>
+    <div class="square-box">
+      <div class="square"></div>
+    </div>
+  </div>
+  <div style="clear:both"></div>
+</body>
+</html>
