@@ -1,4 +1,4 @@
-.main .nav{position:fixed;top:0;left:0;right:0;left:256px;width:auto}.main .nav.nav-hide{left:0}.content{padding-top:64px;padding-left:256px;transition:all .45s cubic-bezier(.23,1,.32,1)}.content.nav-hide{padding-left:0}.trans{transition:all .45s cubic-bezier(.23,1,.32,1)}/*!
+.main{height:100%}.main .nav{position:fixed;top:0;left:0;right:0;left:256px;width:auto}.main .nav.nav-hide{left:0}.content{padding-top:64px;padding-left:256px;transition:all .45s cubic-bezier(.23,1,.32,1);overflow-y:scroll;height:100%}.content.nav-hide{padding-left:0}.trans{transition:all .45s cubic-bezier(.23,1,.32,1)}/*!
  * Muse UI v2.0.2 (https://github.com/myronliu347/vue-carbon)
  * (c) 2017 Myron Liu 
  * Released under the MIT License.
