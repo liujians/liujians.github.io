@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/blood.css">
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+</head>
+<body>
+    <div class="reveal">
+		<div class="slides">
+			<section>
+                <section>
+                    <h3>React Family Big Box</h3>
+                    <img src="img/react-all.png" alt="">
+                </section>
+            </section>
+            <section data-state="customevent">
+                <img width="200" src="img/react.jpg" alt="">
+                <p>
+                    <small>
+                        React 起源于 Facebook 的内部项目
+                    </small>
+                </p>
+                <p>
+                    <small>
+                        因为对市场上所有 JavaScript MVC 框架都不满意，就决定自己写一套，用来架设 Instagram 的网站。
+                    </small>
+                </p>
+                <p>
+                    <small>
+                        做出来以后，发现这套东西很好用，就在2013年5月开源了。
+                    </small>
+                </p>
+                <aside class="notes">
+                    <a href="http://www.react-cn.com/">react中文文档:http://www.react-cn.com/</a>
+                </aside>
+            </section>
+            <section>
+                <section>
+                    最基本的react例子
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                            ```
+                            let HelloBox = React.createElement('h1',null,'welcome to react');
+                            let Welcome = React.createElement('div', null, HelloBox );
+                            React.render(
+                                Welcome,
+                                document.getElementById('app')
+                            );
+                            ```
+
+                            需要一个根节点
+
+                            <!-- .element: class="fragment" -->
+                        
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                            ```
+                            let str = 'hello React'
+                            let Welcome = (
+                                <div>
+                                    <h1>{`welcome,${str}`}</h1>
+                                </div>
+                            );
+                            React.render(
+                                Welcome,
+                                document.getElementById('app')
+                            );
+                            ```
+
+                            使用JSX语法
+
+                            <!-- .element: class="fragment" -->
+                    </script>
+                </section>
+                
+            </section>
+            <section>
+				<p>单页应用</p>
+				<p>组件化</p>
+				<p>代码重用性强</p>
+				<p>* 组件名称要大写</p>
+				<p>* JSX包含多行代码时，将它们包含在小括号中</p>
+				<p>* 只能存在一个顶级标签</p>
+			</section>
+            <section>
+				<img width="200" src="img/react-router.png" alt="">
+                <p>
+                    <small>
+                        React-router是官方维护的项目、
+                    </small>
+                </p>
+                <p>
+                    <small>
+                        你只要用了 React，就会发现合理的选择就是，采用它的整个技术栈。——阮一峰
+                    </small>
+                </p>
+                <aside class="notes">
+                    <a href="https://reacttraining.cn/web">react-router中文文档:https://reacttraining.cn/web</a>
+                </aside>
+			</section>
+            <section>
+                <section>
+                    react-router例子
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                            ```
+                            import React from 'react'
+                            import {
+                                BrowserRouter as Router,
+                                Route,
+                                Link
+                            } from 'react-router-dom'
+
+                            const BasicExample = () => (
+                            <Router>
+                                <div>
+                                <ul>
+                                    <li><Link to="/">首页</Link></li>
+                                    <li><Link to="/about">关于</Link></li>
+                                </ul>
+
+                                <hr/>
+
+                                <Route exact path="/" component={Home}/>
+                                <Route path="/about" component={About}/>
+                                </div>
+                            </Router>
+                            )
+
+                            const Home = () => (
+                            <div>
+                                <h2>首页</h2>
+                            </div>
+                            )
+
+                            const About = () => (
+                            <div>
+                                <h2>关于</h2>
+                            </div>
+                            )
+                            export default BasicExample
+                            ```
+                    </script>
+                </section>
+            </section>
+            <section>
+				<p>降低大型应用的复杂性</p>
+				<p>组件的切换</p>
+				<p>Url管理</p>
+			</section>
+            <section>
+				<img width="200" src="img/redux.png" alt="">
+                <p>React 只是 DOM 的一个抽象层，并不是 Web 应用的完整解决方案。有两个方面，它没涉及。</p>
+                <ul>
+                    <li class="fragment">代码结构</li>
+                    <li class="fragment">组件通信</li>
+                </ul>
+                <aside class="notes">
+                    <a href="http://www.redux.org.cn/">redux中文文档:http://www.redux.org.cn/</a>
+                </aside>
+			</section>
+            <section>
+				<img width="200" src="img/flux.png" alt="">
+                ——
+				<img width="200" src="img/redux.png" alt="">
+                <p>2014年facebook推出flux、来解决相关问题、2015年redux出现，将 Flux 与函数式编程结合一起，很短时间内就成为了最热门的前端架构。对react的应用、作者还推出了react-redux</p>
+            </section>
+            <section>
+				redux生命周期
+                <img src="img/redux.jpg" alt="">
+			</section>
+            <section>
+                <section>
+                    redux例子
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                            ```
+                            import { createStore } from 'redux';
+                            // reducer
+                            function counter(state = { count: 0 }, action) {
+                                const count = state.count
+                                switch (action.type) {
+                                    case 'INCREMENT':
+                                        return {count:count + 1};
+                                    case 'DECREMENT':
+                                        return {count:count - 1};
+                                    default:
+                                        return {count:count};
+                                }
+                            }
+                            // store
+                            const store = createStore(counter);
+
+                            // action
+                            function addAction(str){
+                                return {
+                                    type:str
+                                }
+                            }
+
+                            // 调用dispatch
+                            store.dispatch(addAction('INCREMENT'))
+
+                            // subscribe
+                            store.subscribe(() =>
+                                console.log(store.getState())
+                            );
+
+                            export default store;
+                            ```
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                            ```
+                            import { Provider,connect } from 'react-redux'
+
+                            class BasicExample extends React.Component {
+                                render() {
+                                    const { value, onIncreaseClick } = this.props
+                                    return (
+                                        <div>
+                                            <span>{value}</span>
+                                            <button onClick={onIncreaseClick}>Increase</button>
+                                        </div>
+                                    )
+                                }
+                            }
+
+                            // Map Redux state to component props
+                            function mapStateToProps(state) {
+                                return {
+                                    value: state.count
+                                }
+                            }
+
+                            // Map Redux actions to component props
+                            function mapDispatchToProps(dispatch) {
+                                return {
+                                    onIncreaseClick: () => dispatch(increaseAction)
+                                }
+                            }
+
+                            BasicExample = connect(
+                                mapStateToProps,
+                                mapDispatchToProps
+                            )(BasicExample)
+                            
+                            ReactDOM.render(
+                                <Provider store={store}>
+                                    <BasicExample />
+                                </Provider>,
+                                document.getElementById('root')
+                            )
+                            ```
+                    </script>
+                </section>
+            </section>
+            <section>
+                <p>数据共享</p>
+                <p>其实如果你的应用不是很大型、那就不需要redux、使用它反而会给你的应用增加复杂度</p>
+			</section>
+            <section>
+                <img src="img/redux-observable.png" alt="">
+                <p>通过创建epics中间件，为每一个dispatch添加相应的附加效果,基于rxjs实现</p>
+                <aside class="notes">
+                    <a href="https://buctwbzs.gitbooks.io/rxjs/content/">rxjs中文文档:https://buctwbzs.gitbooks.io/rxjs/content/</a>
+                </aside>
+            </section>
+            <section>
+                <p>例子关联的东西略复杂</p>
+                <p>函数的lodash</p>
+            </section>
+            <section>
+                <img src="img/typescript.jpeg" alt="">
+                <p>TypeScript是JavaScript类型的超集、可以编译成JavaScript</p>
+            </section>
+            <section>
+                <section>
+                    TypeScript的例子
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                            ```
+                            let test0: any = false;
+                            let test: boolean = false;
+                            let test2: number = 0o744;
+                            let test3: string = `test${test}`;
+                            let list: Array<object> = [ {test:111} ];
+                            let list2: [ string, number ] = ['hello', 2];
+                            list2[3] = '11';
+                            enum Color {Red, Green, Blue};
+                            let c: Color = Color.Green;
+
+                            interface ClockInterface {
+                                currentTime: Date;
+                            }
+
+                            class Clock implements ClockInterface {
+                                currentTime: Date;
+                                constructor(h: number, m: number) {
+                                    
+                                }
+                            }
+                            ```
+                    </script>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <img src="img/prop-types.png" alt="">
+                    <p>对于react组件参数类型的校验、Facebook出了这样一个插件来规范传入类型</p>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                            ```
+                            class MyComponent extends React.Component {
+                                render() {
+                                    // ... do things with the props
+                                }
+                            }
+                            
+                            MyComponent.propTypes = {
+                                optionalArray: PropTypes.array,
+                            }
+                            ```
+                    </script>
+                </section>
+            </section>
+            <section>
+                <p>更能预见错误</p>
+                <p>使用ts-lint进行语法检查和报错</p>
+            </section>
+            <section>
+                <h3>更多😯</h3>
+                <p>还有一些生态圈中比较好用的相关库我还没开始看、接下来就开始列举</p>
+            </section>
+            <section>
+                <p>material-ui</p>
+                <img src="img/material-ui.png" alt="">
+                <aside class="notes">
+                    <a href="http://www.material-ui.com/#/" target="_blank">http://www.material-ui.com/#/</a>
+                </aside>
+            </section>
+            <section>
+                <p>react-router-redux</p>
+                <img src="img/react-router-redux.png" alt="">
+                <aside class="notes">
+                    <a href="https://github.com/reactjs/react-router-redux" target="_blank">https://github.com/reactjs/react-router-redux</a>
+                </aside>
+            </section>
+            <section>
+                <p>redux-thunk</p>
+                <img src="img/redux-thunk.png" alt="">
+                <aside class="notes">
+                    <a href="https://github.com/gaearon/redux-thunk" target="_blank">https://github.com/gaearon/redux-thunk</a>
+                </aside>
+            </section>
+            <section>
+                <h3>哪些知名项目在用？😄</h3>
+                <p class="fragment">lantern 蓝灯</p>
+                <p class="fragment">AntDesign网站</p>
+                <p class="fragment">美团、阿里、去哪、等公司的内部系统用的居多</p>
+            </section>
+            <section>
+                <p>知乎的文章页使用react做服务端渲染</p>
+                <img src="img/zh.png" alt="">
+            </section>
+            <section>
+                <h2>谢谢大家</h2>
+            </section>
+		</div>
+	</div>
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+	<script>
+		Reveal.initialize({
+            controls: true,
+			progress: true,
+			history: true,
+			center: true,
+            backgroundTransition: 'fade',
+
+            transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+			// More info https://github.com/hakimel/reveal.js#dependencies
+			dependencies: [
+				{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+				{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+				{ src: 'plugin/zoom-js/zoom.js', async: true },
+				{ src: 'plugin/notes/notes.js', async: true }
+			]
+        });
+        Reveal.addEventListener( 'customevent', function() {
+            console.log( '"customevent" has fired' );
+        } );
+	</script>
+</body>
+</html>
