@@ -57,7 +57,7 @@
                             需要一个根节点
 
                             <!-- .element: class="fragment" -->
-                        
+
                     </script>
                 </section>
                 <section data-markdown>
@@ -80,12 +80,11 @@
                             <!-- .element: class="fragment" -->
                     </script>
                 </section>
-                
+
             </section>
             <section>
 				<p>单页应用</p>
-				<p>组件化</p>
-				<p>代码重用性强</p>
+				<p>高内聚低耦合</p>
 				<p>* 组件名称要大写</p>
 				<p>* JSX包含多行代码时，将它们包含在小括号中</p>
 				<p>* 只能存在一个顶级标签</p>
@@ -255,7 +254,7 @@
                                 mapStateToProps,
                                 mapDispatchToProps
                             )(BasicExample)
-                            
+
                             ReactDOM.render(
                                 <Provider store={store}>
                                     <BasicExample />
@@ -309,7 +308,7 @@
                             class Clock implements ClockInterface {
                                 currentTime: Date;
                                 constructor(h: number, m: number) {
-                                    
+
                                 }
                             }
                             ```
@@ -329,7 +328,7 @@
                                     // ... do things with the props
                                 }
                             }
-                            
+
                             MyComponent.propTypes = {
                                 optionalArray: PropTypes.array,
                             }
